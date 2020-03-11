@@ -45,7 +45,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (require 'multiple-cursors-core)
 (require 'mc-mark-more)
 
@@ -87,7 +87,7 @@
   (interactive)
   (save-excursion
     (let ((col (current-column)))
-      (loop while (and (zerop (forward-line 1))
+      (cl-loop while (and (zerop (forward-line 1))
                        (not (eobp))
                        (= (move-to-column col) col)
                        (not (and (zerop col)
@@ -103,7 +103,7 @@
   (interactive)
   (save-excursion
     (let ((col (current-column)))
-      (loop while (and (zerop (forward-line -1))
+      (cl-loop while (and (zerop (forward-line -1))
                        (not (bobp))
                        (= (move-to-column col) col)
                        (not (and (zerop col)

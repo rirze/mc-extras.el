@@ -44,7 +44,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (require 'multiple-cursors-core)
 (require 'mc-cycle-cursors)
 
@@ -68,11 +68,11 @@
   "Remove duplicated fake cursors, including ones that overlap the real cursor."
   (interactive)
   (mapc 'mc/remove-fake-cursor
-        (loop with seen = (list (point))
+        (cl-loop with seen = (list (point))
               for cursor in (mc/all-fake-cursors)
               for start = (overlay-start cursor)
               append
-              (if (loop for pos in seen thereis (= pos start))
+              (if (cl-loop for pos in seen thereis (= pos start))
                   (list cursor)
                 (setq seen (cons start seen))
                 nil))))
@@ -83,7 +83,7 @@
 (defun mc/remove-cursors-at-bol ()
   "Remove cursors at BOL, either fake or real."
   (interactive)
-  (loop for cursor in (mc/all-fake-cursors)
+  (cl-loop for cursor in (mc/all-fake-cursors)
         for start = (overlay-start cursor)
         do (if (save-excursion (goto-char start) (bolp))
                (mc/remove-fake-cursor cursor)))
@@ -95,7 +95,7 @@
 (defun mc/remove-cursors-at-eol ()
   "Remove cursors at EOL, either fake or real."
   (interactive)
-  (loop for cursor in (mc/all-fake-cursors)
+  (cl-loop for cursor in (mc/all-fake-cursors)
         for start = (overlay-start cursor)
         do (if (save-excursion (goto-char start) (eolp))
                (mc/remove-fake-cursor cursor)))
@@ -109,7 +109,7 @@
 (defun mc/remove-cursors-on-blank-lines ()
   "Remove cursors on blank lines, either fake or real."
   (interactive)
-  (loop for cursor in (mc/all-fake-cursors)
+  (cl-loop for cursor in (mc/all-fake-cursors)
         for start = (overlay-start cursor)
         do (if (save-excursion (goto-char start) (and (looking-at "\\s-*$")
                                                       (looking-back "^\\s-*")))

@@ -43,7 +43,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (require 'multiple-cursors-core)
 
 ;;;###autoload
@@ -74,7 +74,7 @@ This command pushes the mark before moving cursors."
   (interactive)
   (let (current-prefix-arg)
     (mc/execute-command-for-all-cursors 'push-mark-command)
-    (while (loop for cursor in (mc/all-fake-cursors)
+    (while (cl-loop for cursor in (mc/all-fake-cursors)
                  with c = (following-char)
                  always (char-equal (char-after (overlay-start cursor)) c))
       (mc/execute-command-for-all-cursors 'forward-char))))
@@ -87,7 +87,7 @@ This command pushes the mark before moving cursors."
   (interactive)
   (let (current-prefix-arg)
     (mc/execute-command-for-all-cursors 'push-mark-command)
-    (while (loop for cursor in (mc/all-fake-cursors)
+    (while (cl-loop for cursor in (mc/all-fake-cursors)
                  with c = (preceding-char)
                  always (char-equal (char-before (overlay-start cursor)) c))
       (mc/execute-command-for-all-cursors 'backward-char))))
